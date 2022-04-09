@@ -14,7 +14,7 @@ export const GifsProvider:FC = ({ children }) => {
 	const [state, dispatch] = useReducer(gifsReducer, GIF_INITIAL_STATE);
 
 	useEffect(() => {
-		const gifs: IGif[] = JSON.parse(localStorage.getItem('gifs') || '');
+		const gifs: IGif[] = JSON.parse(localStorage.getItem('gifs')!) || [];
 
 		if (gifs) setGifs(gifs);
 	}, []);
