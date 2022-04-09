@@ -20,7 +20,6 @@ export const SearchResults = () => {
 	), [setPage]);
 
 	useEffect(() => {
-		console.log(isNearScreen);
 		if (isNearScreen) {
 			debounceHandleNextPage();
 		}

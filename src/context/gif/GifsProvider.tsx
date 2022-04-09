@@ -1,5 +1,5 @@
-import { FC, useCallback, useReducer } from 'react';
-import { GifsContext, gifsReducer  } from '.';
+import { FC, useCallback, useReducer, useEffect } from 'react';
+import { GifsContext, gifsReducer } from '.';
 import { IGif } from '../../interfaces';
 
 export interface GifsState {
@@ -7,23 +7,30 @@ export interface GifsState {
 }
 
 const GIF_INITIAL_STATE: GifsState = {
-	gifs: [],
+	gifs: []
 };
 
 export const GifsProvider:FC = ({ children }) => {
+	const [state, dispatch] = useReducer(gifsReducer, GIF_INITIAL_STATE);
 
- const [state, dispatch] = useReducer( gifsReducer , GIF_INITIAL_STATE);
+	useEffect(() => {
+		const gifs: IGif[] = JSON.parse(localStorage.getItem('gifs') || '');
 
- const setGifs = useCallback(( gifs: IGif[] ) => {
-			dispatch({ type: '[Gif] - SetGifs', payload: gifs });
- }, []);
+		if (gifs) setGifs(gifs);
+	}, []);
 
- return (
-	<GifsContext.Provider value={{ 
-	 ...state,
-		setGifs
-	 }}>
-		{ children }
-	</GifsContext.Provider>
- );
+	const setGifs = useCallback((gifs: IGif[]) => {
+		localStorage.setItem('gifs', JSON.stringify(gifs));
+
+		dispatch({ type: '[Gif] - SetGifs', payload: gifs });
+	}, []);
+
+	return (
+		<GifsContext.Provider value={{
+			...state,
+			setGifs
+		}}>
+			{ children }
+		</GifsContext.Provider>
+	);
 };
