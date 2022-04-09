@@ -1,0 +1,6 @@
+{
+	"redirects": [
+	{ "source": "/gif", "destination": "/" },
+	{ "source": "/search", "destination": "/" }
+	]
+	}
